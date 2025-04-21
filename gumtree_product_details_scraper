@@ -1,0 +1,51 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+def scrape_gumtree_product_page(url):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+
+    response = requests.get(url, headers=headers)
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Extracting product details
+    title = soup.select_one('h1[data-q="vip-title"]').text.strip()
+    price = soup.select_one('h3[data-q="ad-price"]').text.strip()
+    description = soup.select_one('p[itemprop="description"]').text.strip()
+    seller_name = soup.select_one('h2.seller-rating-block-name').text.strip()
+    images_url = [img['src'] for img in soup.select('div[data-testid="carousel"] img') if 'src' in img.attrs]
+
+
+    return {
+        'title': title,
+        'price': price,
+        'description': description,
+        'seller_name': seller_name,
+        'images_url': images_url,
+        'product_url': url
+    }
+
+def save_to_csv(data, filename):
+    df = pd.DataFrame(data)
+    df.to_csv(filename, index=False)
+
+def main():
+    product_urls = [
+        'https://www.gumtree.com/p/bmw/bmw-1-series-118d-sport-5dr-nav-/1488114476',
+        'https://www.gumtree.com/p/kia/diesel-estate-12-months-mot-px-welcome-nationwide-delivery-available/1483456978',
+        # Add more product URLs here
+    ]
+
+    product_data = []
+
+    for url in product_urls:
+        product_info = scrape_gumtree_product_page(url)
+        product_data.append(product_info)
+
+    save_to_csv(product_data, 'gumtree_product_data.csv')
+    print(f'Scraped {len(product_data)} product pages and saved to gumtree_product_data.csv')
+
+if __name__ == '__main__':
+    main()
