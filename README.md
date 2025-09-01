@@ -1,3 +1,9 @@
+<a href="https://crawlbase.com/signup?utm_source=github&utm_medium=readme&utm_campaign=crawling_api_banner" target="_blank">
+  <img src="https://github.com/user-attachments/assets/afa4f6e7-25fb-442c-af2f-b4ddcfd62ab2" 
+       alt="crawling-api-cta" 
+       style="max-width: 100%; border: 0;">
+</a>
+
 # 🛒 Scrape Gumtree Data Easily with Python
 
 A complete Python scraper to extract product listings and individual product details from [Gumtree](https://www.gumtree.com), including support for pagination and data export to CSV. Optionally, integrate with [Crawlbase Smart Proxy](https://crawlbase.com) to bypass rate limits and IP bans.
